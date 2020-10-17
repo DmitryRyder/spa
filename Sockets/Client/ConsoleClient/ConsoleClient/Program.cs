@@ -2,11 +2,14 @@
 using System.Text;
 using System.Net;
 using System.Net.Sockets;
+using System.Linq;
 
 namespace ConsoleClient
 {
     class Program
     {
+        Action[] actionArray = new Action[10];
+        
         // адрес и порт сервера, к которому будем подключаться
         static int port1 = 8005; // порт сервера
         static string address1 = "127.0.0.1"; // адрес сервера
@@ -60,6 +63,22 @@ namespace ConsoleClient
                 Console.WriteLine(ex.Message);
             }
             Console.Read();
+        }
+
+        private IPEndPoint[] SocketsScale(int numberOfServers)
+        {
+            var defaultIp = "127.0.0.1";
+            var defaultPort = 8001;
+            var ipPoints = new IPEndPoint[numberOfServers];
+
+            for (var i = 0; i < numberOfServers; i++)
+            {
+                var ip = defaultIp.Replace(defaultIp.Split('.').LastOrDefault(), i.ToString());
+                var port = defaultPort + i;
+                ipPoints[i] = new IPEndPoint(IPAddress.Parse(ip), port);
+            }
+
+            return ipPoints;
         }
     }
 }

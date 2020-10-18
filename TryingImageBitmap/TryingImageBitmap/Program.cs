@@ -14,7 +14,7 @@ namespace TryingImageBitmap
         {
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
-            var filter = new Filter(3, _image);
+            var filter = new Filter(39, _image);
 
             stopWatch.Start();
             filter.Process();

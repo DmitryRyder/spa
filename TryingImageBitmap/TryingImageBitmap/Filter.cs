@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
@@ -48,7 +49,7 @@ namespace TryingImageBitmap
             var rgbValues = new byte[Math.Abs(data.Stride) * _image.Height];
             var lengthOfPart = Math.Abs(data.Stride) * _image.Height / parts;
             Marshal.Copy(data.Scan0, rgbValues, 0, Math.Abs(data.Stride) * _image.Height);
-
+            var testArray = rgbValues.Split(parts).ToArray();
             //Создание параллельных задач
             for (int i = 0; i < parts; i++)
             {
@@ -84,7 +85,6 @@ namespace TryingImageBitmap
 
         private async Task FilterProcessAsync(BitmapData data, int parts)
         {
-            //List<Action> actions = new List<Action>();
             List<Task> tasks = new List<Task>();
             var rgbValues = new byte[Math.Abs(data.Stride) * _image.Height];
             var lengthOfPart = Math.Abs(data.Stride) * _image.Height / parts;

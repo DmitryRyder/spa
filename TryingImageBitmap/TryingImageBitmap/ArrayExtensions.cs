@@ -7,9 +7,9 @@ namespace TryingImageBitmap
     {
         public static IEnumerable<IEnumerable<T>> Split<T>(this T[] array, int size)
         {
-            for (var i = 0; i < array.Length; i += (array.Length) / size)
+            for (var i = 0; i < array.Length; i += array.Length / size)
             {
-                yield return array.Skip(i).Take((array.Length) / size).ToArray();
+                yield return array.Skip(i).Take(array.Length / size).ToArray();
             }
         }
     }

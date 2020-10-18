@@ -16,7 +16,7 @@ namespace TryingImageBitmap
         {
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
-            ProcessImage(30);
+            ProcessImage(999);
             _bmp.Save("d:\\mountains-wallpapers2.bmp", ImageFormat.Jpeg);
             stopWatch.Stop();
             Console.WriteLine("затраченное время: " + stopWatch.ElapsedMilliseconds);
@@ -41,12 +41,12 @@ namespace TryingImageBitmap
             for (int i = 0; i < parts; i++)
             {
                 var indexParam = i;
-                //actions.Add(() => Filter(rgbValues, indexParam, lengthOfPart));
-                Filter(rgbValues, indexParam, lengthOfPart);
+                actions.Add(() => Filter(rgbValues, indexParam, lengthOfPart));
+                //Filter(rgbValues, indexParam, lengthOfPart);
             }
 
             //Вызов задач параллельно
-            //Parallel.Invoke(actions.ToArray());
+            Parallel.Invoke(actions.ToArray());
             Marshal.Copy(rgbValues, 0, data.Scan0, Math.Abs(data.Stride) * _bmp.Height);
 
             _bmp.UnlockBits(data);
@@ -59,7 +59,11 @@ namespace TryingImageBitmap
             Console.WriteLine($"индекс: {index}");
             Console.WriteLine($"длина части: {lengthOfPart}");
 
-            for (int counter = 1; counter < lengthOfPart * (index + 1); counter += 3)
+            var counterCase = index * lengthOfPart + 2;
+            var counterCase2 = (lengthOfPart * index) + lengthOfPart - 1;
+            var length = rgbValues.Length;
+
+            for (int counter = index * lengthOfPart + 2; counter < (lengthOfPart * index) + lengthOfPart-1; counter += 3)
                 rgbValues[counter] = 255;
         }
     }

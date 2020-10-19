@@ -15,7 +15,7 @@ namespace ConsoleClient
         static string address1 = "127.0.0.1"; // адрес сервера
         static int port2 = 8006; // порт сервера
         static string address2 = "127.0.0.2"; // адрес сервера
-        static void Main(string[] args)
+        static void Main()
         {
             try
             {
@@ -65,20 +65,6 @@ namespace ConsoleClient
             Console.Read();
         }
 
-        private IPEndPoint[] SocketsScale(int numberOfServers)
-        {
-            var defaultIp = "127.0.0.1";
-            var defaultPort = 8001;
-            var ipPoints = new IPEndPoint[numberOfServers];
 
-            for (var i = 0; i < numberOfServers; i++)
-            {
-                var ip = defaultIp.Replace(defaultIp.Split('.').LastOrDefault(), i.ToString());
-                var port = defaultPort + i;
-                ipPoints[i] = new IPEndPoint(IPAddress.Parse(ip), port);
-            }
-
-            return ipPoints;
-        }
     }
 }

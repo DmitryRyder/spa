@@ -1,8 +1,10 @@
-﻿using ConsoleClient.Models;
+﻿using ConsoleClient.Extensions;
+using ConsoleClient.Models;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
@@ -24,28 +26,48 @@ namespace ConsoleClient.Services.Implementations
             Rectangle rect = new Rectangle(0, 0, _image.Width, _image.Height);
             BitmapData bmpData = _image.LockBits(rect, ImageLockMode.ReadWrite, _image.PixelFormat);
 
-            FilterProcessParallel(bmpData, _sockets.Count);
+            SendParallelData(bmpData, _sockets.Count);
         }
 
-        private void FilterProcessParallel(BitmapData data, int parts)
+        private void SendParallelData(BitmapData data, int parts)
         {
             //Используем ArrayExtensions.Split() для деления массива на части и отправки на сокеты.
 
             List<Action> actions = new List<Action>();
             var rgbValues = new byte[Math.Abs(data.Stride) * _image.Height];
-            var lengthOfPart = Math.Abs(data.Stride) * _image.Height / parts;
+            //var lengthOfPart = Math.Abs(data.Stride) * _image.Height / parts;
             Marshal.Copy(data.Scan0, rgbValues, 0, Math.Abs(data.Stride) * _image.Height);
 
-            //Создание параллельных задач
-            for (int i = 0; i < parts; i++)
+            var partArray = rgbValues.Split(parts).ToArray();
+
+            for(var i = 0; i < parts; i++)
             {
-                var indexParam = i;
-                actions.Add(() => Implementation(rgbValues, indexParam, lengthOfPart));
+                actions.Add(() =>
+                {
+                    _sockets[i].Send(partArray[i].ToArray());
+                    _sockets[i].RecieveData();
+                });
             }
 
-            //Вызов задач параллельно
             Parallel.Invoke(actions.ToArray());
-            Marshal.Copy(rgbValues, 0, data.Scan0, Math.Abs(data.Stride) * _image.Height);
+
+            _sockets.ForEach(s =>
+            {
+                rgbValues = new byte[Math.Abs(data.Stride) * _image.Height];
+                rgbValues.Concat(s.Data);
+            });
+            var result = _sockets.FirstOrDefault().RecieveData();
+
+            ////Создание параллельных задач
+            //for (int i = 0; i < parts; i++)
+            //{
+            //    var indexParam = i;
+            //    actions.Add(() => Implementation(rgbValues, indexParam, lengthOfPart));
+            //}
+
+            ////Вызов задач параллельно
+            //Parallel.Invoke(actions.ToArray());
+            Marshal.Copy(result, 0, data.Scan0, Math.Abs(data.Stride) * _image.Height);
 
             _image.UnlockBits(data);
         }

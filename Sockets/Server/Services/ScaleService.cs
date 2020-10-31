@@ -1,9 +1,9 @@
-﻿using ConsoleClient.Models;
+﻿using Server.Models;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 
-namespace ConsoleClient.Implementations
+namespace Server
 {
     internal class ScaleService
     {
@@ -24,9 +24,9 @@ namespace ConsoleClient.Implementations
             Sockets.ForEach(i => i.CloseConnection());
         }
 
-        public void Connect()
+        public void Listen()
         {
-            Sockets.ForEach(i => i.Connect());
+            Sockets.ForEach(i => i.Listen());
         }
 
         public void CreateScale()
@@ -37,8 +37,8 @@ namespace ConsoleClient.Implementations
             {
                 var address = _startStringAdress + i.ToString();
                 var port = _beginPort + i;
-                Sockets.Add(new CustomSocket 
-                { 
+                Sockets.Add(new CustomSocket
+                {
                     IpPoint = new IPEndPoint(IPAddress.Parse(address), port),
                     Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
                 });

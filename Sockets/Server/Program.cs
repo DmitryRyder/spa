@@ -1,22 +1,17 @@
 ﻿using System;
-using System.Text;
-using System.Net;
-using System.Net.Sockets;
 using System.Threading.Tasks;
-using System.Linq;
 
 namespace Server
 {
     class Program
     {
-        //static int port1 = 8005; // порт для приема входящих запросов
-        //static int port2 = 8006; // порт для приема входящих запросов
         static void Main()
         {
             try
             {
                 Console.WriteLine("Укажите кол-во серверов");
                 var scaleService = new ScaleService(Convert.ToInt32(Console.ReadLine()));
+
                 scaleService.CreateScale();
 
                 Console.WriteLine("Сокеты запущены. Ожидание подключений...");
@@ -24,19 +19,15 @@ namespace Server
 
                 Console.WriteLine("Получение информации от клиента");
                 Parallel.ForEach(scaleService.Sockets, i => i.RecieveData());
-                var data = MockFilter.Implementation(scaleService.Sockets.FirstOrDefault().Data);
-                scaleService.Sockets.FirstOrDefault().Send(data);
-                scaleService.Sockets.FirstOrDefault().CloseConnection();
+                Parallel.ForEach(scaleService.Sockets, i => i.FilterProcess());
+                Parallel.ForEach(scaleService.Sockets, i => i.Send());
+
+                scaleService.CloseConnections();
             }
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
-
-
-
-
-
 
             //// получаем адреса для запуска сокета
             //IPEndPoint ipPoint1 = new IPEndPoint(IPAddress.Parse("127.0.0.1"), port1);

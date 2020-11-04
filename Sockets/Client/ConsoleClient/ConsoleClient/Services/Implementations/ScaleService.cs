@@ -1,4 +1,5 @@
 ﻿using ConsoleClient.Models;
+using ConsoleClient.Models.Dto;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
@@ -29,7 +30,7 @@ namespace ConsoleClient.Implementations
             Sockets.ForEach(i => i.Connect());
         }
 
-        public void CreateScale()
+        public void CreateScale(List<ImagePartDto> chunks)
         {
             Sockets = new List<CustomSocket>();
 
@@ -37,10 +38,11 @@ namespace ConsoleClient.Implementations
             {
                 var address = _startStringAdress + i.ToString();
                 var port = _beginPort + i;
-                Sockets.Add(new CustomSocket 
+                Sockets.Add(new CustomSocket
                 { 
                     IpPoint = new IPEndPoint(IPAddress.Parse(address), port),
-                    Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
+                    Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp),
+                    Data = chunks[i - 2]
                 });
             }
         }

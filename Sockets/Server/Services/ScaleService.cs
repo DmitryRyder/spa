@@ -10,6 +10,7 @@ namespace Server
         private readonly int _numberOfsockets;
         private readonly string _startStringAdress;
         private readonly int _beginPort;
+
         public List<CustomSocket> Sockets { get; set; }
 
         public ScaleService(int numberOfsockets, int beginPort = 8001)

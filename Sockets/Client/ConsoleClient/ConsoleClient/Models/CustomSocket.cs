@@ -1,22 +1,17 @@
-﻿using System.Net;
+﻿using ConsoleClient.Models.Dto;
+using System;
+using System.Net;
 using System.Net.Sockets;
 
 namespace ConsoleClient.Models
 {
     internal class CustomSocket
     {
-        private byte[] _buffer;
-
         public IPEndPoint IpPoint { get; set; }
 
         public Socket Socket { get; set; }
 
-        public byte[] Data => _buffer;
-
-        public CustomSocket(int bufferSize)
-        {
-            _buffer = new byte[bufferSize];
-        }
+        public ImagePartDto Data { get; set; }
 
         public void Connect()
         {
@@ -34,15 +29,13 @@ namespace ConsoleClient.Models
             Socket.Send(data);
         }
 
-        public byte[] RecieveData()
+        public void RecieveData()
         {
             do
             {
-                Socket.Receive(_buffer, _buffer.Length, 0);
+                Socket.Receive(Data.PartOfImage, Data.BufferSize, 0);
             }
             while (Socket.Available > 0);
-
-            return _buffer;
         }
     }
 }

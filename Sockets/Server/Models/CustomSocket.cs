@@ -68,9 +68,7 @@ namespace Server.Models
 
         private void Deserialize()
         {
-            //MemoryStream ms = new MemoryStream(_buffer);
-            //BinaryFormatter formatter = new BinaryFormatter();
-            //var data = (ImagePartDto)formatter.Deserialize(ms);
+            //https://stackoverflow.com/questions/15012549/send-typed-objects-through-tcp-or-sockets
             using MemoryStream memStream = new MemoryStream();
             BinaryFormatter binForm = new BinaryFormatter();
             memStream.Write(_buffer, 0, _buffer.Length);

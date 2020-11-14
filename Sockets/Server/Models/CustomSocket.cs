@@ -1,4 +1,4 @@
-﻿using Server.Models.Dto;
+﻿using Models.CommonDto;
 using System;
 using System.IO;
 using System.Net;
@@ -68,6 +68,9 @@ namespace Server.Models
 
         private void Deserialize()
         {
+            //MemoryStream ms = new MemoryStream(_buffer);
+            //BinaryFormatter formatter = new BinaryFormatter();
+            //var data = (ImagePartDto)formatter.Deserialize(ms);
             using MemoryStream memStream = new MemoryStream();
             BinaryFormatter binForm = new BinaryFormatter();
             memStream.Write(_buffer, 0, _buffer.Length);

@@ -1,5 +1,5 @@
 ﻿using ConsoleClient.Models;
-using ConsoleClient.Models.Dto;
+using Models.CommonDto;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;

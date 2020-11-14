@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace Server.Models.Dto
+namespace Models.CommonDto
 {
     [Serializable]
-    internal class ImagePartDto
+    public class ImagePartDto
     {
         public int BufferSize { get; set; }
 

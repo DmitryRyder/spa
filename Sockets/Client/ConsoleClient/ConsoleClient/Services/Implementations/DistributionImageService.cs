@@ -1,6 +1,6 @@
 ﻿using ConsoleClient.Extensions;
 using ConsoleClient.Models;
-using ConsoleClient.Models.Dto;
+using Models.CommonDto;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -38,14 +38,17 @@ namespace ConsoleClient.Services.Implementations
 
         public void ConcatImage(List<CustomSocket> sockets)
         {
-            _rgbValues = new byte[Math.Abs(_bmpData.Stride) * _image.Height];
+            var byteListResult = new List<byte>();
+
+            //_rgbValues = new byte[Math.Abs(_bmpData.Stride) * _image.Height];
 
             foreach (var socket in sockets)
             {
-                _rgbValues.Concat(socket.Data.PartOfImage);
+                byteListResult.AddRange(socket.Data.PartOfImage);
+                //_rgbValues.Concat(socket.Data.PartOfImage);
             }
 
-            Marshal.Copy(_rgbValues, 0, _bmpData.Scan0, Math.Abs(_bmpData.Stride) * _image.Height);
+            Marshal.Copy(byteListResult.ToArray(), 0, _bmpData.Scan0, Math.Abs(_bmpData.Stride) * _image.Height);
             _image.UnlockBits(_bmpData);
         }
 
@@ -58,15 +61,19 @@ namespace ConsoleClient.Services.Implementations
 
             for (var i = 0; i < _parts; i++)
             {
-                if (i + 1 == _parts && size % _parts != 0)
+                if (partArray.Length > _parts && i + 2 == partArray.Length)
                 {
+                    var tempByteList = new List<byte>();
+                    tempByteList.AddRange(partArray[i].ToArray());
+                    tempByteList.AddRange(partArray[i + 1].ToArray());
+
                     chunks.Add(new ImagePartDto
                     {
-                        BufferSize = size + size % _parts,
-                        PartOfImage = partArray[i].ToArray()
+                        BufferSize = size + partArray[i + 1].ToArray().Length,
+                        PartOfImage = tempByteList.ToArray()
                     });
 
-                    continue;
+                    break;
                 }
 
                 chunks.Add(new ImagePartDto
@@ -96,7 +103,7 @@ namespace ConsoleClient.Services.Implementations
             Parallel.Invoke(actions.ToArray());
         }
         
-        private byte[] Serialize(object partOfImage)
+        private byte[] Serialize(ImagePartDto partOfImage)
         {
             if (partOfImage == null)
                 return null;

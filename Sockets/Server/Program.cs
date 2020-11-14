@@ -21,7 +21,7 @@ namespace Server
                 Parallel.ForEach(scaleService.Sockets, i => i.RecieveData());
                 Parallel.ForEach(scaleService.Sockets, i => i.FilterProcess());
                 Parallel.ForEach(scaleService.Sockets, i => i.Send());
-
+                //не должен закрывать коннекшны, пока клиент не завершит получение обработанных данных
                 scaleService.CloseConnections();
             }
             catch(Exception ex)

@@ -1,0 +1,40 @@
+﻿@page "{handler?}"
+@model WebApp.Pages.ProcessImage.IndexModel
+@{
+    ViewData["Title"] = "WebApp";
+}
+<form method="POST">
+    <div class="form-group">
+        <label htmlFor="countOfServers">Count of servers:</label>
+        <input asp-for="InputData.CountOfServes" class="form-control" id="countOfServers" aria-describedby="countOfServers" />
+    </div>
+    @*<div class="form-group">
+        <label htmlFor="diastolicBloodPressure">Diastolic Blood Pressure: </label>
+        <input asp-for="InputData.StartIp" class="form-control" id="diastolicBloodPressure" />
+    </div>*@
+    <div class="form-group">
+        <label htmlFor="pathToImage">Path to image: </label>
+        <input type="file" asp-for="InputData.Path" class="form-control" id="pathToImage" accept=".jpg, .jpeg, .png"/>
+    </div>
+           >
+    @*<div class="form-group">
+            <label htmlFor="heartRate">Heart Rate (/min): </label>
+            <input asp-for="InputData.HeartRate" class="form-control" id="heartRate" />
+        </div>
+        <div class="form-group">
+            <label htmlFor="o2Level">O2Level: </label>
+            <input asp-for="InputData.O2Level" class="form-control" id="o2Level" />
+        </div>
+        <div class="form-group">
+            <label htmlFor="systolicBloodPressure">Systolic Blood Pressure: </label>
+            <input asp-for="InputData.SystolicBloodPressure" class="form-control" id="systolicBloodPressure" />
+        </div>
+        <div class="form-group">
+            <label htmlFor="temperature">Temperature (°C): </label>
+            <input asp-for="InputData.Temperature" class="form-control" id="temperature" />
+        </div>*@
+    <div class="text-center">
+        <input type="submit" value="Start filter process" class="btn btn-primary center" />
+    </div>
+</form>
+

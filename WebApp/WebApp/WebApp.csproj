@@ -12,4 +12,8 @@
     <ProjectReference Include="..\..\Sockets\Models\Models\Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
 </Project>

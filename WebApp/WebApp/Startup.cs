@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using WebApp.Services;
 
@@ -23,6 +24,7 @@ namespace WebApp
                 .AddRazorPagesOptions(options =>
                 {
                     options.Conventions.AllowAnonymousToPage("/ProcessImage/Index");
+                    options.Conventions.AllowAnonymousToPage("/ProcessImage/Result");
                 });
 
             services.AddHttpContextAccessor();
@@ -42,6 +44,11 @@ namespace WebApp
             //app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             app.UseDefaultFiles();
             app.UseStaticFiles();
+            //app.UseStaticFiles(new StaticFileOptions
+            //{
+            //    FileProvider = new PhysicalFileProvider(@"C:\images"),  
+            //    RequestPath = "/img"
+            //});
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseEndpoints(endpoints =>

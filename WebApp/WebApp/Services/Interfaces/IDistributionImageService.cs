@@ -13,7 +13,7 @@ namespace WebApp.Services
 
         void ConcatImage(List<CustomSocket> sockets);
 
-        void SaveResultImage();
+        string SaveResultImage();
 
         void SetImageAndParts(Bitmap image, int parts);
     }

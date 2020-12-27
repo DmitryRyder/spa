@@ -1,4 +1,6 @@
-﻿namespace WebApp.ViewModels
+﻿using System;
+
+namespace WebApp.ViewModels
 {
     public class InputData
     {
@@ -7,5 +9,7 @@
         public string StartIp { get; set; }
 
         public string Path { get; set; }
+
+        public string ProcessedFile { get; set; }
     }
 }

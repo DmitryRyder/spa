@@ -5,6 +5,7 @@
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="https://bootswatch.com/4/darkly/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+    <script src="~/lib/jquery/dist/jquery.js"></script>
 </head>
 <body>
     <div id="root" class="container">
@@ -13,16 +14,10 @@
             </div>
             <div className="col-6">
                 <div className="text-center">
-                    <h1 class="text-center">REMO-ONE</h1>
+                    <h1 class="text-center">Scaling image filtering service</h1>
                     <p class="text-center">Data Coming:</p>
                 </div>
                 @RenderBody()
-            </div>
-            <div className="col text-center">
-                <form method="POST" style="width: 200px">
-                    <input type="number" class="form-control" name="deviceId" />
-                    <input type="submit" class="form-control" asp-page-handler="GetDataByDeviceNumber" value="Get data by device number" />
-                </form>
             </div>
         </div>
     </div>

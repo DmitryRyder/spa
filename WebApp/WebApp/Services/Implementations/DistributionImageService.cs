@@ -35,9 +35,12 @@ namespace WebApp.Services
             Marshal.Copy(_bmpData.Scan0, _rgbValues, 0, Math.Abs(_bmpData.Stride) * _image.Height);
         }
 
-        public void SaveResultImage()
+        public string SaveResultImage()
         {
-            _image.Save("c:\\test.jpg.", ImageFormat.Jpeg);
+            var guid = Guid.NewGuid();
+            _image.Save($"C:\\repos\\spa\\WebApp\\WebApp\\wwwroot\\images\\test{guid}", ImageFormat.Jpeg);
+
+            return $"test{guid}";
         }
 
         public void ConcatImage(List<CustomSocket> sockets)
@@ -74,7 +77,8 @@ namespace WebApp.Services
                     chunks.Add(new ImagePartDto
                     {
                         BufferSize = size + partArray[i + 1].ToArray().Length,
-                        PartOfImage = tempByteList.ToArray()
+                        PartOfImage = tempByteList.ToArray(),
+                        WidthImage = _image.Width
                     });
 
                     break;
@@ -83,7 +87,8 @@ namespace WebApp.Services
                 chunks.Add(new ImagePartDto
                 {
                     BufferSize = size,
-                    PartOfImage = partArray[i].ToArray()
+                    PartOfImage = partArray[i].ToArray(),
+                    WidthImage = _image.Width
                 });
             }
 

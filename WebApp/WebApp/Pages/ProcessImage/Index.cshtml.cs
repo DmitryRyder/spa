@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Drawing;
-using System.Threading.Tasks;
 using WebApp.Services;
 using WebApp.ViewModels;
 
@@ -13,25 +13,26 @@ namespace WebApp.Pages.ProcessImage
 
         private readonly IScaleService _scaleService;
 
-        public IndexModel(IDistributionImageService distributionImageService, IScaleService scaleService)
+        private readonly IHostingEnvironment _hostingEnvironment;
+
+        public IndexModel(IDistributionImageService distributionImageService, IScaleService scaleService, IHostingEnvironment environment)
         {
             _distributionImageService = distributionImageService;
             _scaleService = scaleService;
+            _hostingEnvironment = environment;
         }
 
         [BindProperty]
         public InputData InputData { get; set; }
 
-        public async Task<IActionResult> OnGet()
+        public IActionResult OnGet()
         {
-            //InputData = await _remoOneApiService.GetDataByDeviceId(1);
-
             return Page();
         }
 
-        public async Task OnPostGetDataByDeviceNumber(int deviceId)
+        public void GetProcessedImage(int deviceId)
         {
-            //InputData = await _remoOneApiService.GetDataByDeviceId(deviceId);
+            
         }
 
         public IActionResult OnPost()
@@ -48,10 +49,11 @@ namespace WebApp.Pages.ProcessImage
             _scaleService.Connect();
             _distributionImageService.SendParallelData(_scaleService.Sockets);
             _distributionImageService.ConcatImage(_scaleService.Sockets);
-            _distributionImageService.SaveResultImage();
+            InputData.ProcessedFile = _distributionImageService.SaveResultImage();
             _scaleService.CloseConnections();
-
-            return RedirectToPage("./Index");
+            
+            var url = Url.Page("Result", new { name = "Tom", age = 34 });
+            return RedirectToPage(url);
         }
     }
 }

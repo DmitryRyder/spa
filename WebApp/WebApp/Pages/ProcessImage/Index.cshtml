@@ -8,33 +8,41 @@
         <label htmlFor="countOfServers">Count of servers:</label>
         <input asp-for="InputData.CountOfServes" class="form-control" id="countOfServers" aria-describedby="countOfServers" />
     </div>
-    @*<div class="form-group">
-        <label htmlFor="diastolicBloodPressure">Diastolic Blood Pressure: </label>
-        <input asp-for="InputData.StartIp" class="form-control" id="diastolicBloodPressure" />
-    </div>*@
     <div class="form-group">
         <label htmlFor="pathToImage">Path to image: </label>
-        <input type="file" asp-for="InputData.Path" class="form-control" id="pathToImage" accept=".jpg, .jpeg, .png"/>
+        <input type="file" style="width: 250px; padding-bottom: 5px; height: auto;" asp-for="InputData.Path" class="form-control" id="pathToImage" accept=".jpg, .jpeg, .png" />
+        <div id="image"></div>
     </div>
-           >
-    @*<div class="form-group">
-            <label htmlFor="heartRate">Heart Rate (/min): </label>
-            <input asp-for="InputData.HeartRate" class="form-control" id="heartRate" />
-        </div>
-        <div class="form-group">
-            <label htmlFor="o2Level">O2Level: </label>
-            <input asp-for="InputData.O2Level" class="form-control" id="o2Level" />
-        </div>
-        <div class="form-group">
-            <label htmlFor="systolicBloodPressure">Systolic Blood Pressure: </label>
-            <input asp-for="InputData.SystolicBloodPressure" class="form-control" id="systolicBloodPressure" />
-        </div>
-        <div class="form-group">
-            <label htmlFor="temperature">Temperature (°C): </label>
-            <input asp-for="InputData.Temperature" class="form-control" id="temperature" />
-        </div>*@
+    <div class="form-group">
+        <label asp-for="InputData.ProcessedFile" class="control-label" htmlFor="pathToImage"></label>
+        <input asp-for="InputData.ProcessedFile" class="form-control" id="pathToImage" />
+    </div>
     <div class="text-center">
         <input type="submit" value="Start filter process" class="btn btn-primary center" />
     </div>
 </form>
+@*<div className="col text-center">
+    <form method="POST" style="width: 200px">
+        <label asp-for="InputData.ProcessedFile" class="control-label" htmlFor="pathToImage"></label>
+        <input asp-for="InputData.ProcessedFile" class="form-control" id="pathToImage" />
+        <input type="submit" class="form-control" asp-page-handler="GetProcessedImage" value="Показать обработанное изображение" />
+    </form>
+</div>*@
+
+<script>
+    $('#pathToImage').change(function() {
+        var filename = $('#pathToImage').val();
+        console.log(filename);
+        var tempArr = filename.split('\\');
+        var fileNameF = '/images/' + tempArr[tempArr.length - 1];
+        console.log(fileNameF);
+        $('#image').append(`<img id="theImg" src="${fileNameF}" />`);
+        $('#my_file').html(filename);
+    });
+
+    @*function chooseProcessedFile() {
+        var test = @Model.
+        while( )
+    }*@
+</script>
 

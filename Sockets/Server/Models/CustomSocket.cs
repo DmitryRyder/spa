@@ -50,9 +50,8 @@ namespace Server.Models
         {
             do
             {
-                Console.WriteLine("test");
+                Console.WriteLine("Reciving data");
                 _handler.Receive(_buffer, _buffer.Length, 0);
-
             }
             while (Socket.Available > 0);
 
@@ -62,7 +61,7 @@ namespace Server.Models
 
         public void FilterProcess()
         {
-            var result = _filter.Implementation(Data.PartOfImage);
+            var result = _filter.Implementation(Data.PartOfImage, Data.WidthImage);
             Data.PartOfImage = result;
         }
 
